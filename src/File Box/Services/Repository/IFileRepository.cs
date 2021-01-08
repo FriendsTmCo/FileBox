@@ -6,7 +6,7 @@ namespace Services.Repository
 {
     public interface IFileRepository
     {
-        Task<Files> GetFileByDownloadLinkAsync(string downloadLink);
+        Task<DownloadFileViewModel> GetFileByDownloadLinkAsync(string downloadLink);
         Task<int> UploadNewFileAsync(FileviewModel fileviewModel,IHeaderDictionary headers);
         Task<int> UploadNewFileAsync(FileviewModel fileviewModel,IRequestCookieCollection cookies);
 

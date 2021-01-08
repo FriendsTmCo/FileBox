@@ -72,9 +72,19 @@ namespace Services.Services
             return await Task.Run(async () => await GetAllAsync(f => f.FileName.Contains(q)));
         }
 
-        public async Task<Files> GetFileByDownloadLinkAsync(string downloadLink)
+        public async Task<DownloadFileViewModel> GetFileByDownloadLinkAsync(string downloadLink)
         {
-            return await Task.Run(async () => await _db.Files.FirstOrDefaultAsync(f => f.DownloadLink == downloadLink));
+            return await Task.Run(async () =>
+            {
+                var file = await _db.Files.FirstOrDefaultAsync(f => f.DownloadLink == downloadLink);
+                string path = Directory.GetCurrentDirectory() + @"\UsersFiles\";
+                return new DownloadFileViewModel
+                {
+                    Base64 = Convert.ToBase64String(File.ReadAllBytes(path + file.FileName)),
+                    FileName = file.FileName,
+                    Extention = Path.GetExtension(path + file.FileName)
+                };
+            });
         }
 
         public async Task<IEnumerable<Files>> GetUserFilesAsync(IHeaderDictionary header)
