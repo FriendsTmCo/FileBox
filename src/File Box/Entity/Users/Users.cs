@@ -12,7 +12,7 @@ public record Users
     /// <summary>
     /// Users Primary Key
     /// </summary>
-    [Required]
+    [Key]
     public Guid UserId { get; set; }
 
     /// <summary>

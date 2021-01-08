@@ -15,7 +15,7 @@ public record Files
     /// <summary>
     /// File Primary Key
     /// </summary>
-    [Required]
+    [Key]
     public Guid FileId { get; set; }
 
     /// <summary>
