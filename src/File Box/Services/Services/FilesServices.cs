@@ -16,8 +16,11 @@ namespace Services.Services
 
         private readonly FileContext _db;
 
-        public FilesServices(FileContext db)
+        private readonly IUserRepository _user;
+
+        public FilesServices(FileContext db,UserServices users)
         {
+            _user = users;
             _db = db;
         }
 
@@ -140,9 +143,18 @@ namespace Services.Services
             return await Task.Run(async () =>
             {
                 byte[] fileBytes = Convert.FromBase64String(fileviewModel.Base64);
-                fileviewModel.FileSize = fileBytes.Length;
-                Files newFile = CreateFile(fileviewModel, Guid.NewGuid());
-                return (await InsertAsync(newFile) && await SaveAsync()) ? 0 : -2;
+                if (!string.IsNullOrEmpty(fileviewModel.Base64))
+                {
+                    fileviewModel.FileSize = fileBytes.Length;
+                    var user = await _user.GetUserFromTokenAsync(headers);
+                    if (user != null)
+                    {
+                        Files newFile = CreateFile(fileviewModel, user.UserId);
+                        return (await InsertAsync(newFile) && await SaveAsync()) ? (int)FileResult.Success : (int)FileResult.Exceptions;
+                    }
+                    return (int)FileResult.UserNotFound;
+                }
+                return (int)FileResult.NullRefrenceBase64;
             });
         }
 
