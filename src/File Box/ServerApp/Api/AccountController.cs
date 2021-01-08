@@ -9,7 +9,7 @@ namespace ServerApp.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MainController : ControllerBase
+    public class AccountController : ControllerBase
     {
 
     }
