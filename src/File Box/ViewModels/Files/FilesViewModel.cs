@@ -13,6 +13,12 @@ public record FileviewModel
     public string Base64 { get; set; }
 
     /// <summary>
+    /// File Extention
+    /// </summary>
+    [Required]
+    public string Extention { get; set; }
+
+    /// <summary>
     /// File Size Fix In Server
     /// </summary>
     public float FileSize { get; set; }
