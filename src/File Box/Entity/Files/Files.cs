@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,12 @@ public record Files
     /// </summary>
     [Required]
     public string DownloadCount { get; set; }
+
+    /// <summary>
+    /// Upload File Date
+    /// </summary>
+    [Required]
+    public DateTime UploadDate { get; set; }
 
     /// <summary>
     /// User foregen Key
