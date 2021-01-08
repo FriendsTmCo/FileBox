@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Services.Repository;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace Services.Services
 
         public async Task<bool> DeleteAsync(object Id)
         {
-            return await Task.Run(async () => await DeleteAsync(GetByIdAsync(Id)));
+            return await Task.Run(async () => await DeleteAsync(await GetByIdAsync(Id)));
         }
 
         public async void Dispose()
@@ -120,18 +121,43 @@ namespace Services.Services
 
         public async Task<bool> UpdateAsync(Files tModel)
         {
-            return await Task.Run( () =>
+            return await Task.Run(() =>
+           {
+               try
+               {
+                   _db.Files.Update(tModel);
+                   return true;
+               }
+               catch
+               {
+                   return false;
+               }
+           });
+        }
+
+        public async Task<int> UploadNewFileAsync(FileviewModel fileviewModel, IHeaderDictionary headers)
+        {
+            return await Task.Run(async () =>
             {
-                try
-                {
-                    _db.Files.Update(tModel);
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
+                byte[] fileBytes = Convert.FromBase64String(fileviewModel.Base64);
+                fileviewModel.FileSize = fileBytes.Length;
+                Files newFile = CreateFile(fileviewModel, Guid.NewGuid());
+                return (await InsertAsync(newFile) && await SaveAsync()) ? 0 : -2;
             });
+        }
+
+        private Files CreateFile(FileviewModel file, Guid userId)
+        {
+            return new Files()
+            {
+                DownloadCount = 0,
+                DownloadLink = Guid.NewGuid().ToString().Substring(0, 7),
+                FileId = Guid.NewGuid(),
+                FileName = Guid.NewGuid().ToString().Substring(0, 8),
+                UploadDate = DateTime.Now,
+                Size = file.FileSize,
+                UserId = userId
+            };
         }
     }
 }

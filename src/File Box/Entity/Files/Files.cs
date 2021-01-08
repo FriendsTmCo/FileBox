@@ -34,13 +34,13 @@ public record Files
     /// File Size
     /// </summary>
     [Required]
-    public string Size { get; set; }
+    public float Size { get; set; }
 
     /// <summary>
     /// Download Count 
     /// </summary>
     [Required]
-    public string DownloadCount { get; set; }
+    public float DownloadCount { get; set; }
 
     /// <summary>
     /// Upload File Date
