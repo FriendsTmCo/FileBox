@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading.Tasks;
 
 namespace Services.Repository
@@ -18,5 +19,26 @@ namespace Services.Repository
         /// <param name="cookies">Cookies</param>
         /// <returns></returns>
         Task<Users> GetUserFromTokenAsync(IRequestCookieCollection cookies);
+
+        /// <summary>
+        /// Check Exist User With User Id
+        /// </summary>
+        /// <param name="Id">User Id</param>
+        /// <returns></returns>
+        Task<bool> IsExistAsync(Guid Id);
+
+        /// <summary>
+        /// Check Exist User With Emai Address
+        /// </summary>
+        /// <param name="EmailAddress">Email Address Or</param>
+        /// <returns></returns>
+        Task<bool> IsExistAsync(string EmailAddress);
+
+        /// <summary>
+        /// Check Exist User With User Name
+        /// </summary>
+        /// <param name="UserName">User Name</param>
+        /// <returns></returns>
+        bool IsExist(string UserName);
     }
 }
