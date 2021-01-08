@@ -18,7 +18,7 @@ namespace Services.Services
 
         private readonly IUserRepository _user;
 
-        public FilesServices(FileContext db,UserServices users)
+        public FilesServices(FileContext db, UserServices users)
         {
             _user = users;
             _db = db;
@@ -75,6 +75,24 @@ namespace Services.Services
         public async Task<Files> GetFileByDownloadLinkAsync(string downloadLink)
         {
             return await Task.Run(async () => await _db.Files.FirstOrDefaultAsync(f => f.DownloadLink == downloadLink));
+        }
+
+        public async Task<IEnumerable<Files>> GetUserFilesAsync(IHeaderDictionary header)
+        {
+            return await Task.Run(async () =>
+            {
+                Users user = await _user.GetUserFromTokenAsync(header);
+                return (user != null) ? GetUserFiles(user.UserId) : null;
+            });
+        }
+
+        public async Task<IEnumerable<Files>> GetUserFilesAsync(IRequestCookieCollection cookies)
+        {
+            return await Task.Run(async () =>
+            {
+                Users user = await _user.GetUserFromTokenAsync(cookies);
+                return (user != null) ?  GetUserFiles(user.UserId) : null;
+            });
         }
 
         public async Task<bool> InsertAsync(Files tModel)
@@ -158,6 +176,26 @@ namespace Services.Services
             });
         }
 
+        public async Task<int> UploadNewFileAsync(FileviewModel fileviewModel, IRequestCookieCollection cookies)
+        {
+            return await Task.Run(async () =>
+            {
+                byte[] fileBytes = Convert.FromBase64String(fileviewModel.Base64);
+                if (!string.IsNullOrEmpty(fileviewModel.Base64))
+                {
+                    fileviewModel.FileSize = fileBytes.Length;
+                    var user = await _user.GetUserFromTokenAsync(cookies);
+                    if (user != null)
+                    {
+                        Files newFile = CreateFile(fileviewModel, user.UserId);
+                        return (await InsertAsync(newFile) && await SaveAsync()) ? (int)FileResult.Success : (int)FileResult.Exceptions;
+                    }
+                    return (int)FileResult.UserNotFound;
+                }
+                return (int)FileResult.NullRefrenceBase64;
+            });
+        }
+
         private Files CreateFile(FileviewModel file, Guid userId)
         {
             return new Files()
@@ -170,6 +208,11 @@ namespace Services.Services
                 Size = file.FileSize,
                 UserId = userId
             };
+        }
+
+        private IEnumerable<Files> GetUserFiles(Guid userId)
+        {
+            return GetAllAsync(f => f.UserId == userId).Result;
         }
     }
 }
