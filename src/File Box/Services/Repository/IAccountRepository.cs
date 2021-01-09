@@ -11,8 +11,9 @@ namespace Services.Repository
         /// Login User
         /// </summary>
         /// <param name="login">Login View Model</param>
+        /// <param name="ipAddressInfos">Connection Info</param>
         /// <returns></returns>
-        Task<LoginResult> LoginAsync(LoginViewModel login);
+        Task<LoginResult> LoginAsync(LoginViewModel login, IpAddressInfos ipAddressInfos);
 
         /// <summary>
         /// SignUp User
@@ -25,7 +26,8 @@ namespace Services.Repository
         /// Active User
         /// </summary>
         /// <param name="activation">Activation View Model</param>
-        /// <returns></returns>
-        Task<ActivationResult> Activation(ActivationViewModell activation);
+        /// <param name="ipAddressInfos">connection Info</param>
+        /// <returns>Activation Result</returns>
+        Task<ActivationResult> Activation(ActivationViewModell activation,IpAddressInfos ipAddressInfos);
     }
 }

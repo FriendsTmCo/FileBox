@@ -73,3 +73,33 @@ public record ActivationViewModell
     [Required]
     public string ActiveCode { get; set; }
 }
+
+/// <summary>
+/// Connection View Model
+/// </summary>
+public record IpAddressInfos
+{
+    /// <summary>
+    /// Remote connection Ip Address
+    /// </summary>
+    [Required]
+    public string RemoteIp { get; set; }
+
+    /// <summary>
+    /// Local Connection Ip Address
+    /// </summary>
+    [Required]
+    public string LocalIp { get; set; }
+
+    /// <summary>
+    /// Local Connection Port
+    /// </summary>
+    [Required]
+    public string LocalPort { get; set; }
+
+    /// <summary>
+    /// Remote Connection Port
+    /// </summary>
+    [Required]
+    public string RemotePort { get; set; }
+}

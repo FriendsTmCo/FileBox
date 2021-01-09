@@ -21,6 +21,13 @@ namespace Services.Repository
         Task<Users> GetUserFromTokenAsync(IRequestCookieCollection cookies);
 
         /// <summary>
+        /// Find User By Email Address
+        /// </summary>
+        /// <param name="email">User Email</param>
+        /// <returns>User</returns>
+        Task<Users> GetUserByEmailAddress(string email);
+
+        /// <summary>
         /// Check Exist User With User Id
         /// </summary>
         /// <param name="Id">User Id</param>
