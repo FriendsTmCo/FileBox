@@ -74,9 +74,7 @@
                     </VisualStateGroupList>
                 </Setter>
             </Style>
-
            
-        </ResourceDictionary>
     </Shell.Resources>
 
     <!-- 
@@ -100,7 +98,10 @@
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
 
-    <FlyoutItem Title="About" Icon="icon_about.png">
+    <FlyoutItem Title="Home" Icon="home.png">
+        <ShellContent Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Login" Icon="icons8_account.png">
         <ShellContent Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
     </FlyoutItem>
     <FlyoutItem Title="Browse" Icon="icon_feed.png">
