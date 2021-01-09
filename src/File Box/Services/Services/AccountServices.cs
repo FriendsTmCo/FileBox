@@ -126,7 +126,7 @@ namespace Services.Services
                 UserName = sing.UserName.Trim().ToLower(),
                 ActiveCode = UserTool.CreateActiveCode(),
                 ActiveDate = DateTime.Now,
-                Email = sing.Email,
+                Email = sing.Email.Trim().ToLower(),
                 IsActive = false,
                 Password = sing.Password.CreateSHA256()
             };

@@ -71,6 +71,11 @@ namespace Services.Services
             return await Task.Run(async () => await GetAllAsync(u=> u.UserName.Contains(q) || u.Email.Contains(q)));
         }
 
+        public Task<Users> GetUserByEmailAddress(string email)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Users> GetUserFromTokenAsync(IHeaderDictionary header)
         {
             return await Task.Run(async () =>
@@ -105,6 +110,21 @@ namespace Services.Services
                     return false;
                 }
             });
+        }
+
+        public bool IsExist(string UserName)
+        {
+            return _db.Users.Any(u => u.UserName == UserName.Trim().ToLower());
+        }
+
+        public async Task<bool> IsExistAsync(Guid Id)
+        {
+            return await Task.Run(async () => await _db.Users.AnyAsync(u => u.UserId == Id));
+        }
+
+        public async Task<bool> IsExistAsync(string EmailAddress)
+        {
+            return await Task.Run(async () => await _db.Users.AnyAsync(u => u.Email == EmailAddress.Trim().ToLower()));
         }
 
         public bool Save()
