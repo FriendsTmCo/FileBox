@@ -74,7 +74,7 @@ namespace Services.Services
 
                 return new ActivationResult
                 {
-                    Status = ActivationResultEn.UserNotFounr
+                    Status = ActivationResultEn.UserNotFound
                 };
             });
         }

@@ -36,7 +36,7 @@ public record ActivationResult
 public enum ActivationResultEn
 {
     Success = 0,
-    UserNotFounr = -1,
+    UserNotFound = -1,
     Exception = -2,
     WrongActiveCode = -3
 }
